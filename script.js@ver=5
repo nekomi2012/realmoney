@@ -1,0 +1,115 @@
+function revadd() {
+	name = $('#name').val();
+	mess = $('#mess').val();
+	
+	$.post('/engine/modules/rev.php',{name:name, mess:mess},function(data){
+		$('#modal').arcticmodal();
+		setTimeout(function(){$('#modal').arcticmodal('close')}, 2500);
+		if(name != '' && mess != '') {
+			$('.modal_content').html('Спасибо за отзыв, после проверки он будет опубликован.'+data);
+		} else {
+			$('.modal_content').html('Пожалуйста, заполните все поля ...');
+		}
+	});
+}
+
+$(document).ready(function(){
+	$('.bxslider').bxSlider({
+		mode: 'fade',
+		auto: true,
+		autoControls: true
+	});
+	
+	if (module == 'portfolio') {
+		if($('html').width() <= 1100) {$('.port_short').css({opacity: '1'});}
+		setTimeout(function(){$('.port_short:nth-child(1)').animate({opacity: "1"}, 300);}, 100);
+		setTimeout(function(){$('.port_short:nth-child(2)').animate({opacity: "1"}, 300);}, 200);
+		setTimeout(function(){$('.port_short:nth-child(3)').animate({opacity: "1"}, 300);}, 300);
+		setTimeout(function(){$('.port_short:nth-child(4)').animate({opacity: "1"}, 300);}, 400);
+		setTimeout(function(){$('.port_short:nth-child(5)').animate({opacity: "1"}, 300);}, 500);
+		setTimeout(function(){$('.port_short:nth-child(6)').animate({opacity: "1"}, 300);}, 600);
+		setTimeout(function(){$('.port_short:nth-child(7)').animate({opacity: "1"}, 300);}, 700);
+		setTimeout(function(){$('.port_short:nth-child(8)').animate({opacity: "1"}, 300);}, 800);
+		setTimeout(function(){$('.port_short:nth-child(9)').animate({opacity: "1"}, 300);}, 900);
+		setTimeout(function(){$('.port_short:nth-child(10)').animate({opacity: "1"}, 300);}, 1000);
+		setTimeout(function(){$('.port_short:nth-child(11)').animate({opacity: "1"}, 300);}, 1100);
+		setTimeout(function(){$('.port_short:nth-child(12)').animate({opacity: "1"}, 300);}, 1200);
+	}
+	
+	if (module == 'main') {
+		if($('html').width() <= 1100) {
+			$('.loading').hide();
+		} else {
+			setTimeout(function(){$('.loading .logo').show().addClass('fadeInDown animated'); disableScroll();}, 50);
+			setTimeout(function(){$('.loading .lines').show().addClass('fadeIn animated').html('<div></div>');}, 200);
+			setTimeout(function(){$('.lines div').css({width: '0%'}).animate({width: '100%'}, 500);}, 400);
+			setTimeout(function(){$('.lines').removeClass('fadeIn').fadeOut(500);}, 1000);
+			setTimeout(function(){$('.loading .logo').animate({top: '96px'}, 500); $('body,html').animate({scrollTop: 0}, 500);}, 1500);
+			setTimeout(function(){$('.loading').fadeOut(500);}, 2000);
+			setTimeout(function(){$('.loading .logo, .loading .lines').removeClass('animated fadeInDown fadeIn fadeOut'); enableScroll();}, 2500);
+			setTimeout(function(){
+				$('.gallery li:nth-child(1)').addClass('animated flipInX');
+				$('.gallery li:nth-child(2)').addClass('animated flipInY');
+				$('.gallery li:nth-child(3)').addClass('animated zoomIn');
+				$('.gallery li:nth-child(4)').addClass('animated rotateInDownLeft');
+				$('.gallery li:nth-child(5)').addClass('animated rotateIn');
+				$('.gallery li:nth-child(6)').addClass('animated slideInRight');
+				$('.gallery li:nth-child(7)').addClass('animated zoomInRight');
+				$('.gallery li:nth-child(8)').addClass('animated zoomInUp');
+				$('.gallery li:nth-child(9)').addClass('animated flipInY');
+				$('.gallery li:nth-child(10)').addClass('animated zoomIn');
+			}, 2000);
+		}
+	}
+	
+	$(".port_button_rev").click(function(){
+		$.ajax({
+			url: "/engine/modules/reviews_action.php",
+			type: "GET",
+			data: {"nums": nums},
+			cache: false,
+			success: function(data){
+				nums = nums + 6;
+				$("." + animate).after('<div class="content ' + (animate+1) + '">' +data+ '</div>');
+				animate++;
+				$('.'+ animate).css("opacity", "0").animate({opacity: "1"}, 800).delay();
+				if (nums >= countall){$(".port_button_rev").hide();}
+			}
+		});
+	});
+	
+	$(".like_btn").click(function () {
+		$.ajax({
+			url: "/engine/modules/like.php",
+			type: "GET",
+			data: {"uid": uid},
+			success: function(data){
+				$(".like").html(data);
+				$(".like_btn").hide();
+				$('#modal').arcticmodal();
+				$('.modal_content').html('Спасибо, что оценили работу!');
+				setTimeout(function(){$('#modal').arcticmodal('close')}, 2500);
+			}
+		});
+	});
+	
+	hs.graphicsDir = '/templates/highslide/graphics/';
+	hs.align = 'center';
+	hs.transitions = ['expand', 'crossfade'];
+	hs.outlineType = 'rounded-white';
+	hs.fadeInOut = true;
+	hs.numberPosition = 'caption';
+	hs.dimmingOpacity = 0.9;
+	
+	if (hs.addSlideshow) hs.addSlideshow({
+		interval: 5000,
+		repeat: false,
+		useControls: true,
+		fixedControls: 'fit',
+		overlayOptions: {
+			opacity: .75,
+			position: 'bottom center',
+			hideOnMouseOut: true
+		}
+	});
+});
